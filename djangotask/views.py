@@ -33,6 +33,9 @@ def get_request_details(request):
                                   query_string=query_string)
         return HttpResponse('success')
     else:
+        request_data = 'Query string param1 {query_string} missing ' \
+                       'in request'
+        logging.debug(request_data.format(query_string=query_string))
         return HttpResponse('Query string *param1* missing in request')
 
 
