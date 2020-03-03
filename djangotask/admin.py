@@ -5,7 +5,7 @@ from .models import Item, Unit
 # Register your models here.
 @admin.register(Unit)
 class UnitAdmin(admin.ModelAdmin):
-    list_display = ('name',)
+    list_display = ('name','modified',)
 
 
 @admin.register(Item)
