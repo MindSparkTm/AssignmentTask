@@ -1,0 +1,12 @@
+<html>
+<h1>
+    Create an Item
+</h1>
+<body>
+<form method="post" >
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" name="Create Form" value="Create"/>
+</form>
+</body>
+</html>

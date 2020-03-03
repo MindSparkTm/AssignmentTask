@@ -1,9 +1,14 @@
 from django.contrib import admin
-from .models import ClientRequestDetail
-# Register your models here.
+from .models import Item, Unit
 
-@admin.register(ClientRequestDetail)
-class ClientRequestDetailAdmin(admin.ModelAdmin):
-    list_display = ('ip','content_type','browser_detail','query_string')
-    readonly_fields = ('date_added',)
-    search_fields = ('browser_detail',)
+
+# Register your models here.
+@admin.register(Unit)
+class UnitAdmin(admin.ModelAdmin):
+    list_display = ('name',)
+
+
+@admin.register(Item)
+class ItemDetailAdmin(admin.ModelAdmin):
+    list_display = ('name', 'quantity',)
+    search_fields = ('name',)

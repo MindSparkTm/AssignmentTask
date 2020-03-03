@@ -1,0 +1,29 @@
+<html>
+<h1>List of ITems</h1>
+<body>
+<style>
+    .buttons {
+  width: 960px;
+  margin: 0 auto;
+}
+
+.action_btn {
+  display: inline-block;
+  width: calc(50% - 4px);
+  margin: 0 auto;
+}
+</style>
+{% for obj in item_list %}
+<p>Name:-{{ obj.name }}</p>
+    <p>Description:-{{ obj.description }}</p>
+<p>Qty-{{ obj.quantity }}</p>
+<p>Unit-{{ obj.unit.name }}</p>
+    <p>Date- {{ obj.modified }}</p>
+<div class="buttons">
+		<a class="action_btn" href="{% url 'djangotask:item-delete' pk=obj.pk %}">Delete</a>
+		<a class="action_btn" href="{% url 'djangotask:item-update' pk=obj.pk %}">Update</a>
+</div>
+
+{% endfor %}
+</body>
+</html>

@@ -1,44 +1,42 @@
-from django.shortcuts import render, HttpResponse
-from .tools import get_content_type, get_browser_detail \
-    , get_client_ip, get_query_string
-from .models import ClientRequestDetail
-from .serializers import ClientRequestDetailSerializer
-from rest_framework.generics import ListAPIView
 import logging
+from django.views.generic import CreateView, UpdateView, \
+    DeleteView, ListView, DetailView
+from .forms import ItemForm
+from .models import Item
+from django.db.models.functions import TruncMonth
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
 
 
-def get_request_details(request):
-    query_string = get_query_string(request)
-    if query_string:
-        client_ip = get_client_ip(request)
-        browser_detail = get_browser_detail(request)
-        content_type = get_content_type(request)
-        request_data = 'Request data IP- {ip},' \
-                       'BrowserDetail- {browser_detail},' \
-                       'ContentType - {content_type},' \
-                       'QueryString - {query_string}'
-        logging.info(request_data
-                     .format(ip=client_ip,
-                             browser_detail=browser_detail,
-                             content_type=content_type,
-                             query_string=query_string))
-
-        client_request_details, _ = ClientRequestDetail. \
-            objects.get_or_create(ip=client_ip,
-                                  browser_detail=browser_detail,
-                                  content_type=content_type,
-                                  query_string=query_string)
-        return HttpResponse('success')
-    else:
-        request_data = 'Query string param1 {query_string} missing ' \
-                       'in request'
-        logging.debug(request_data.format(query_string=query_string))
-        return HttpResponse('Query string *param1* missing in request')
+class ItemCreateView(CreateView):
+    form_class = ItemForm
+    template_name = 'djangotask/item_form.html'
 
 
-class ClientRequestDetailApiView(ListAPIView):
-    serializer_class = ClientRequestDetailSerializer
-    queryset = ClientRequestDetail.objects.all()
+class ItemUpdateView(UpdateView):
+    model = Item
+    template_name = 'djangotask/item_update.html'
+    fields = '__all__'
+
+
+class ItemDeleteView(DeleteView):
+    model = Item
+    template_name = 'djangotask/item_confirm_delete.html'
+
+
+class ItemDetailView(DetailView):
+    model = Item
+    template_name = 'djangotask/item_detail.html'
+    queryset = Item.objects.select_related('unit')
+
+
+class ItemListView(ListView):
+    model = Item
+    template_name = 'djangotask/item_list.html'
+
+    def get_queryset(self):
+        return Item.objects.all() \
+            .annotate(month=TruncMonth('modified')) \
+            .select_related('unit') \
+            .order_by('-modified')

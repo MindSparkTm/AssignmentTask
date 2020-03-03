@@ -1,0 +1,14 @@
+<html>
+<h1>
+    Item Detail
+</h1>
+<body>
+<p>Name:{{ item.name }}</p>
+<p>Description:{{ item.description }}</p>
+<p>Quantity:{{ item.quantity }}</p>
+<p>Unit:{{ item.unit.name }}</p>
+<a href="{% url 'djangotask:item-update' pk=item.pk %}">Update</a>
+<a href="{% url 'djangotask:item-delete' pk=item.pk %}">Delete</a>
+
+ </body>
+</html>
