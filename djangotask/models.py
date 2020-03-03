@@ -19,17 +19,24 @@ class TimeStampedModel(models.Model):
 
 
 class Unit(TimeStampedModel):
-    name = models.CharField(max_length=20, verbose_name=_('Unit of Measurement'))
+    name = models.CharField(max_length=20,
+                            verbose_name=_('Unit of Measurement'),
+                            )
 
     def __str__(self):
         return u'{}'.format(self.name)
+
+
+def get_default_unit():
+    unit, _ = Unit.objects.get_or_create(name='unspecified')
+    return unit.id
 
 
 class Item(TimeStampedModel):
     name = models.CharField(verbose_name=_('Name of Item'), max_length=100)
     description = models.TextField(blank=True, null=True)
     quantity = models.DecimalField(max_digits=20, decimal_places=2)
-    unit = models.ForeignKey(Unit, on_delete=models.CASCADE)
+    unit = models.ForeignKey(Unit, on_delete=models.CASCADE, default=get_default_unit)
 
     def __str__(self):
         return u'{}{}'.format(self.name, self.quantity, self.unit.name)
