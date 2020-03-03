@@ -10,5 +10,5 @@ class UnitAdmin(admin.ModelAdmin):
 
 @admin.register(Item)
 class ItemDetailAdmin(admin.ModelAdmin):
-    list_display = ('name', 'quantity',)
+    list_display = ('name', 'quantity','modified',)
     search_fields = ('name',)

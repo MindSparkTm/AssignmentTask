@@ -14,11 +14,14 @@
 }
 </style>
 {% for obj in item_list %}
+
+    {% ifchanged %}
+        <h2>{{ obj.modified|date }}</h2>
+    {% endifchanged %}
 <p>Name:-{{ obj.name }}</p>
     <p>Description:-{{ obj.description }}</p>
 <p>Qty-{{ obj.quantity }}</p>
 <p>Unit-{{ obj.unit.name }}</p>
-    <p>Date- {{ obj.modified }}</p>
 <div class="buttons">
 		<a class="action_btn" href="{% url 'djangotask:item-delete' pk=obj.pk %}">Delete</a>
 		<a class="action_btn" href="{% url 'djangotask:item-update' pk=obj.pk %}">Update</a>

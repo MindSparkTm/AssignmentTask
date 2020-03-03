@@ -3,7 +3,6 @@ from django.views.generic import CreateView, UpdateView, \
     DeleteView, ListView, DetailView
 from .forms import ItemForm
 from .models import Item
-from django.db.models.functions import TruncMonth
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
@@ -37,6 +36,5 @@ class ItemListView(ListView):
 
     def get_queryset(self):
         return Item.objects.all() \
-            .annotate(month=TruncMonth('modified')) \
             .select_related('unit') \
             .order_by('-modified')
